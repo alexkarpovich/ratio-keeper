@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>db.sqlite</file>
+        <file>config.ini</file>
+    </qresource>
+</RCC>
