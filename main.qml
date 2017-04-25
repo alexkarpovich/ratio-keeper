@@ -2,35 +2,40 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.0
 import QtQuick.Window 2.0
+import AppCore 1.0
 
 ApplicationWindow {
     visible: true
-    width: 640
+    width: 320
     height: 480
-    title: qsTr("Hello World")
+    title: qsTr("Ratio.Keeper")
 
-    SwipeView {
-        id: swipeView
-        anchors.fill: parent
-        currentIndex: tabBar.currentIndex
+    Connections {
+        target: appCore
 
-        Page {
-            Label {
-                text: qsTr("Second page")
-                anchors.centerIn: parent
+        onStateChanged: {
+            var sourceFile = "Start.qml"
+
+            switch (state) {
+            case AppCore.START:
+                sourceFile = "Start.qml";
+                break;
+            case AppCore.CUSTOMIZE:
+                sourceFile = "Customize.qml";
+                break;
+            case AppCore.DASHBOARD:
+                sourceFile = "Dashboard.qml";
+                break;
             }
+
+            contentLoader.source = sourceFile;
         }
     }
 
-    footer: TabBar {
-        id: tabBar
-        currentIndex: swipeView.currentIndex
-        TabButton {
-            text: qsTr("First")
-        }
-        TabButton {
-            text: qsTr("Second")
-        }
+    Loader {
+        id: contentLoader
+        anchors.fill: parent
+        source: "Start.qml"
     }
 
     Component.onCompleted: {

@@ -21,17 +21,9 @@ AppCore::AppCore(QObject *parent) : QObject(parent)
 
     this->copyFiles(files);
 
-    QSettings settings(":/config.ini", QSettings::IniFormat);
+    config = new QSettings(":/config.ini", QSettings::IniFormat);
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-    settings.setIniCodec(codec);
-    settings.beginGroup("expense_categories");
-    const QStringList childKeys = settings.childKeys();
-    QStringList values;
-    foreach (const QString &childKey, childKeys)
-    values << settings.value(childKey).toString();
-    settings.endGroup();
-
-    qDebug() << values;
+    config->setIniCodec(codec);
 }
 
 void AppCore::copyFiles(QMap<QString, QString> files) {
@@ -58,4 +50,37 @@ void AppCore::copyFiles(QMap<QString, QString> files) {
 
         ++i;
     }
+}
+
+AppCore::State AppCore::getState() {
+    qDebug() << "AppCore::getState" + this->appState;
+    return this->appState;
+}
+
+void AppCore::setState(State state) {
+    qDebug() << "AppCore::setState " + state;
+    if (this->appState != state) {
+        this->appState = state;
+        emit stateChanged(this->appState);
+
+        qDebug() << "AppCore::stateChanged " + this->appState;
+    }
+}
+
+QStringList AppCore::getDefaultCategories() {
+    qDebug() << "AppCore::getDefaultCategories:";
+    this->config->beginGroup("expense_categories");
+
+    QStringList categoryKeys = this->config->childKeys();
+    QStringList categoryNames;
+
+    foreach (const QString &childKey, categoryKeys) {
+        categoryNames.append(this->config->value(childKey).toString());
+    }
+
+    this->config->endGroup();
+
+    qDebug() << "AppCore::getDefaultCategories " << categoryNames;
+
+    return categoryNames;
 }
