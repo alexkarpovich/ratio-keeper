@@ -8,6 +8,9 @@
 #include <QSqlDatabase>
 #include <QMap>
 #include <QDebug>
+#include "models/user.h"
+#include "models/instance.h"
+#include "models/expense_category.h"
 
 class AppCore : public QObject
 {
@@ -28,14 +31,17 @@ public:
 public slots:
     QStringList getDefaultCategories();
     void setState(State state);
+    void configureInstance(QList<QString> selected);
 
 protected:
     QString dataLocation;
+    QSqlDatabase sdb;
     QSettings * config;
     State appState;
 
 private:
     void copyFiles(QMap<QString, QString> files);
+    void initDataBase();
 
 signals:
     void stateChanged(State state);

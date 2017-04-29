@@ -4,5 +4,6 @@
         <file>qtquickcontrols2.conf</file>
         <file>Customize.qml</file>
         <file>Start.qml</file>
+        <file>Dashboard.qml</file>
     </qresource>
 </RCC>

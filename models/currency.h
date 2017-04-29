@@ -3,7 +3,7 @@
 
 #include "base.h"
 
-class Currency : protected Base
+class Currency : public Base
 {
     Q_PROPERTY(int number READ getNumber WRITE setNumber)
     Q_PROPERTY(QString name READ getName WRITE setName)

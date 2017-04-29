@@ -20,6 +20,7 @@ AppCore::AppCore(QObject *parent) : QObject(parent)
     files["db.sqlite"] = this->dataLocation;
 
     this->copyFiles(files);
+    this->initDataBase();
 
     config = new QSettings(":/config.ini", QSettings::IniFormat);
     QTextCodec *codec = QTextCodec::codecForName("UTF-8");
@@ -49,6 +50,15 @@ void AppCore::copyFiles(QMap<QString, QString> files) {
         }
 
         ++i;
+    }
+}
+
+void AppCore::initDataBase() {
+    QSqlDatabase sdb = QSqlDatabase::addDatabase("QSQLITE");
+    sdb.setDatabaseName(this->dataLocation + "/db.sqlite");
+
+    if (!sdb.open()) {
+        qDebug() << sdb.lastError().text();
     }
 }
 
@@ -83,4 +93,27 @@ QStringList AppCore::getDefaultCategories() {
     qDebug() << "AppCore::getDefaultCategories " << categoryNames;
 
     return categoryNames;
+}
+
+void AppCore::configureInstance(QList<QString> selected) {
+    qDebug() << selected;
+
+    // Create user with temp name
+
+    User * user = new User();
+    user->setUsername(QDateTime::currentDateTime().toString());
+    user->setActive(true);
+    user->save();
+
+    // Create instance
+
+    Instance * instance = new Instance();
+    instance->save();
+    instance->addUser(user);
+
+
+    // Create expense categories from customize page
+    ExpenseCategory::createFromList(instance, selected);
+
+    this->setState(State::DASHBOARD);
 }

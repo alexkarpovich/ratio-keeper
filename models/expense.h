@@ -5,7 +5,7 @@
 #include "expense_category.h"
 #include "user.h"
 
-class Expense : protected BaseEntity
+class Expense : public BaseEntity
 {
     Q_PROPERTY(ExpenseCategory* category READ getCategory WRITE setCategory)
     Q_PROPERTY(User* user READ getUser WRITE setUser)

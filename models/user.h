@@ -3,7 +3,7 @@
 
 #include "base_entity.h"
 
-class User : protected BaseEntity
+class User : public BaseEntity
 {
     Q_PROPERTY(QString username READ getUsername WRITE setUsername)
     Q_PROPERTY(QString email READ getEmail WRITE setEmail)
@@ -28,6 +28,7 @@ public:
    void setFirstName(QString firstName);
    void setLastName(QString lastName);
    void setActive(bool isActive);
+   User* save();
 
 signals:
 

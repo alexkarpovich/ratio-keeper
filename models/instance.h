@@ -2,8 +2,9 @@
 #define INSTANCE_H
 
 #include "base_entity.h"
+#include "user.h"
 
-class Instance : protected BaseEntity
+class Instance : public BaseEntity
 {
     Q_PROPERTY(QString name READ getName WRITE setName)
     Q_PROPERTY(bool active READ isActive WRITE setActive)
@@ -16,6 +17,9 @@ public:
     bool isActive();
     void setName(QString name);
     void setActive(bool isActive);
+
+    Instance * addUser(User * user);
+    Instance * save();
 };
 
 #endif // INSTANCE_H

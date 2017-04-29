@@ -4,7 +4,7 @@
 #include "base_entity.h"
 #include "currency.h"
 
-class ExchangeRate : protected BaseEntity
+class ExchangeRate : public BaseEntity
 {
     Q_PROPERTY(Currency* base READ getBase WRITE setBase)
     Q_PROPERTY(Currency* compare READ getCompare WRITE setCompare)

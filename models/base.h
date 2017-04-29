@@ -1,6 +1,9 @@
 #ifndef BASE_H
 #define BASE_H
 
+#include <QDebug>
+#include <QSqlQuery>
+#include <QSqlError>
 #include <QObject>
 #include <QDateTime>
 

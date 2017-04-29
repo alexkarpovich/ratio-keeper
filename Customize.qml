@@ -1,8 +1,8 @@
 import QtQuick 2.0
+import QtQuick.Controls 2.0
 
 Item {
-    width: 360
-    height: 360
+    anchors.fill: parent
 
     property var categoryModel: appCore.getDefaultCategories()
     property var selected: []
@@ -17,10 +17,6 @@ Item {
         model: categoryModel
         clip: true
 
-        highlight: Rectangle {
-            color: "skyblue"
-        }
-
         delegate: Item {
             property var view: GridView.view
             property var isCurrent: GridView.isCurrentItem
@@ -29,9 +25,10 @@ Item {
             width: view.cellWidth
 
             Rectangle {
+                id: rect
                 anchors.margins: 5
                 anchors.fill: parent
-                color: selected.indexOf(model.index) !== -1 ? '#cccccc' : '#fff000'
+                color: '#169632'
                 border {
                     color: "black"
                     width: 1
@@ -40,7 +37,7 @@ Item {
                 Text {
                     anchors.centerIn: parent
                     renderType: Text.NativeRendering
-                    text: "%1%2".arg(model.modelData).arg(isCurrent ? " *" : "")
+                    text: model.modelData
                 }
 
                 MouseArea {
@@ -48,14 +45,50 @@ Item {
                     onClicked: {
                         view.currentIndex = model.index
 
-                        if (selected.indexOf(model.index) == -1) {
+                        var selIndex = selected.indexOf(model.index);
+
+                        if (selIndex === -1) {
                             selected.push(model.index);
+                            view.currentItem.state = 'selected'
+                        } else {
+                            selected.splice(selIndex, 1);
+                            view.currentItem.state = ''
                         }
 
                         console.log(model.index, model.modelData, selected);
                     }
                 }
             }
+
+            states: [
+                State {
+                    name: 'selected'
+                    PropertyChanges {
+                        target: rect
+                        color: '#00ce2d'
+                    }
+                }
+            ]
+        }
+    }
+
+    Button {
+        id: continueBtn
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: 10
+            horizontalCenter: parent.horizontalCenter
+        }
+        text: 'Продолжить'
+
+        onClicked: {
+            var categoryNames = [];
+
+            for (var i = 0; i < selected.length; i++) {
+                categoryNames.push(categoryModel[selected[i]]);
+            }
+
+            appCore.configureInstance(categoryNames)
         }
     }
 }

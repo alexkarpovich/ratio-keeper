@@ -5,7 +5,7 @@
 #include "currency.h"
 #include "user.h"
 
-class Account : protected BaseEntity
+class Account : public BaseEntity
 {
     Q_PROPERTY(QString name READ getName WRITE setName)
     Q_PROPERTY(float amount READ amount WRITE setAmount)
