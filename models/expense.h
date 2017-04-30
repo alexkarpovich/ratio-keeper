@@ -7,6 +7,7 @@
 
 class Expense : public BaseEntity
 {
+    Q_OBJECT
     Q_PROPERTY(ExpenseCategory* category READ getCategory WRITE setCategory)
     Q_PROPERTY(User* user READ getUser WRITE setUser)
     Q_PROPERTY(float value READ getValue WRITE setValue)
@@ -16,7 +17,7 @@ protected:
     User * _user;
     float _value;
 public:
-    Expense();
+    Expense(QObject * parent = 0);
     ExpenseCategory * getCategory();
     User * getUser();
     float getValue();

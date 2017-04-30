@@ -16,6 +16,10 @@ Item {
         }
         text: qsTr('НАЧАТЬ')
         font.pointSize: 16
+
+        onClicked: {
+            appCore.setState(AppCore.DASHBOARD)
+        }
     }
 
     Button {

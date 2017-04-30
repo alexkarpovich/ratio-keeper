@@ -18,7 +18,7 @@ protected:
     QDateTime _createdAt;
     QDateTime _updatedAt;
 public:
-    explicit Base(QObject *parent = 0);
+    Base(QObject *parent = 0);
 
     QDateTime getCreatedAt();
     QDateTime getUpdatedAt();

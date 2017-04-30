@@ -5,6 +5,7 @@
 
 class Currency : public Base
 {
+    Q_OBJECT
     Q_PROPERTY(int number READ getNumber WRITE setNumber)
     Q_PROPERTY(QString name READ getName WRITE setName)
     Q_PROPERTY(QString code READ getCode WRITE setCode)
@@ -16,7 +17,7 @@ protected:
     QString _code;
     int _minorUnits;
 public:
-    Currency();
+    Currency(QObject * parent = 0);
     int getNumber();
     QString getName();
     QString getCode();
@@ -25,6 +26,8 @@ public:
     void setName(QString name);
     void setCode(QString code);
     void setMinorUnits(int minorUnits);
+
+    static Currency *getByNumber(int number);
 };
 
 #endif // CURRENCY_H

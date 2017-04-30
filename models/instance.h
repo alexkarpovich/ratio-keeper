@@ -6,20 +6,20 @@
 
 class Instance : public BaseEntity
 {
+    Q_OBJECT
     Q_PROPERTY(QString name READ getName WRITE setName)
-    Q_PROPERTY(bool active READ isActive WRITE setActive)
 protected:
     QString _name;
-    bool _active;
 public:
-    Instance();
+    Instance(QObject * parent = 0);
     QString getName();
-    bool isActive();
     void setName(QString name);
-    void setActive(bool isActive);
 
     Instance * addUser(User * user);
     Instance * save();
+
+    static Instance * getById(uuid instanceId);
+    static Instance * getByUserId(uuid userId);
 };
 
 #endif // INSTANCE_H

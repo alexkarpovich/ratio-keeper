@@ -1,6 +1,7 @@
 #include "instance.h"
 
-Instance::Instance()
+Instance::Instance(QObject * parent)
+    : BaseEntity(parent)
 {
 
 }
@@ -9,16 +10,65 @@ QString Instance::getName() {
     return this->_name;
 }
 
-bool Instance::isActive() {
-    return this->_active;
-}
-
 void Instance::setName(QString name) {
     this->_name = name;
 }
 
-void Instance::setActive(bool isActive) {
-    this->_active = isActive;
+Instance * Instance::getById(uuid instanceId) {
+    qDebug() << "Instance::getById -" << instanceId;
+
+    QString sql = "select * from instance where id=:id";
+    QSqlQuery query;
+    query.prepare(sql);
+    query.bindValue(":id", QString(instanceId));
+
+    if (!query.exec()) {
+        qDebug() << query.lastError();
+        qDebug() << query.lastQuery();
+
+        return NULL;
+    }
+
+    if (query.next()) {
+        Instance * instance = new Instance();
+        instance->setId(instanceId);
+        instance->setName(query.value(1).toString());
+        instance->setCreatedAt(query.value(2).toDateTime());
+        instance->setUpdatedAt(query.value(3).toDateTime());
+
+        return instance;
+    }
+
+    return NULL;
+}
+
+Instance * Instance::getByUserId(uuid userId) {
+    qDebug() << "Instance::getByUserId -" << userId;
+
+    QString sql = "select ins.* from instance ins "
+                  "join instance_user iu on ins.id=iu.instance_id and iu.user_id=:user_id";
+    QSqlQuery query;
+    query.prepare(sql);
+    query.bindValue(":user_id", QString(userId));
+
+    if (!query.exec()) {
+        qDebug() << query.lastError();
+        qDebug() << query.lastQuery();
+
+        return NULL;
+    }
+
+    if (query.next()) {
+        Instance * instance = new Instance();
+        instance->setId(query.value(0).toByteArray());
+        instance->setName(query.value(1).toString());
+        instance->setCreatedAt(query.value(2).toDateTime());
+        instance->setUpdatedAt(query.value(3).toDateTime());
+
+        return instance;
+    }
+
+    return NULL;
 }
 
 Instance * Instance::addUser(User *user) {
@@ -51,12 +101,12 @@ Instance * Instance::addUser(User *user) {
 Instance* Instance::save() {
     qDebug() << "Instance::save -";
 
-    int timestamp = BaseEntity::timestamp();
+    int timestamp = Instance::timestamp();
     QString sql = "update instance set (name, updated_at) "
                   "values(:name, :updated_at)";
 
     if (!this->getId()) {
-        this->setId(BaseEntity::genUuid());
+        this->setId(Instance::genUuid());
 
         sql = "insert into instance (id, name, created_at, updated_at) "
               "values(:id, :name, :created_at, :updated_at)";

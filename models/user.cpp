@@ -1,6 +1,7 @@
 #include "user.h"
 
-User::User()
+User::User(QObject * parent)
+    : BaseEntity(parent)
 {
 
 }
@@ -45,15 +46,80 @@ void User::setActive(bool isActive) {
     this->_active = isActive;
 }
 
+User* User::getActiveUser() {
+    qDebug() << "User::getActiveUser -";
+
+    QString sql = "select * from user where active=1";
+    QSqlQuery query;
+
+    if (!query.exec(sql)) {
+        qDebug() << query.lastError();
+        qDebug() << query.lastQuery();
+
+        return NULL;
+    }
+
+    if (query.next()) {
+        User * user = new User();
+
+        user->setId(query.value(0).toByteArray());
+        user->setUsername(query.value(1).toString());
+        user->setEmail(query.value(2).toString());
+        user->setFirstName(query.value(3).toString());
+        user->setLastName(query.value(4).toString());
+        user->setActive(query.value(5).toBool());
+        user->setCreatedAt(query.value(6).toDateTime());
+        user->setUpdatedAt(query.value(7).toDateTime());
+
+        return user;
+    }
+
+    return NULL;
+}
+
+User *User::getById(uuid id)
+{
+    qDebug() << "User::getById -" << id;
+
+    QString sql = "select * from user where id=:id";
+    QSqlQuery query;
+    query.prepare(sql);
+    query.bindValue(":id", QString(id));
+
+    if (!query.exec()) {
+        qDebug() << query.lastError();
+        qDebug() << query.lastQuery();
+
+        return NULL;
+    }
+
+    if (query.next()) {
+        User * user = new User();
+
+        user->setId(query.value(0).toByteArray());
+        user->setUsername(query.value(1).toString());
+        user->setEmail(query.value(2).toString());
+        user->setFirstName(query.value(3).toString());
+        user->setLastName(query.value(4).toString());
+        user->setActive(query.value(5).toBool());
+        user->setCreatedAt(query.value(6).toDateTime());
+        user->setUpdatedAt(query.value(7).toDateTime());
+
+        return user;
+    }
+
+    return NULL;
+}
+
 User* User::save() {
     qDebug() << "User::save -";
 
-    int timestamp = BaseEntity::timestamp();
+    int timestamp = User::timestamp();
     QString sql = "update user set (username, email, first_name, last_name, active, updated_at) "
                   "values(:username, :email, :first_name, :last_name, :isActive, :updated_at)";
 
     if (!this->getId()) {
-        this->setId(BaseEntity::genUuid());
+        this->setId(User::genUuid());
 
         sql = "insert into user (id, username, email, first_name, last_name, active, created_at, updated_at) "
               "values(:id, :username, :email, :first_name, :last_name, :isActive, :created_at, :updated_at)";

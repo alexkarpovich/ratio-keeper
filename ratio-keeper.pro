@@ -1,4 +1,4 @@
-QT += core sql qml quick
+QT += core sql qml quick svg
 
 CONFIG += c++11
 
@@ -12,7 +12,8 @@ SOURCES += main.cpp \
     models/instance.cpp \
     models/expense.cpp \
     models/expense_category.cpp \
-    models/exchange_rate.cpp
+    models/exchange_rate.cpp \
+    appconfig.cpp
 
 RESOURCES += qml.qrc \
     db.qrc
@@ -49,4 +50,5 @@ HEADERS += \
     models/instance.h \
     models/expense.h \
     models/expense_category.h \
-    models/exchange_rate.h
+    models/exchange_rate.h \
+    appconfig.h

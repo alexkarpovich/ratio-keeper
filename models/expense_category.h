@@ -6,21 +6,27 @@
 
 class ExpenseCategory : public BaseEntity
 {
+    Q_OBJECT
+    Q_PROPERTY(Instance* instance READ getInstance WRITE setInstance)
     Q_PROPERTY(QString name READ getName WRITE setName)
     Q_PROPERTY(QString description READ getDescription WRITE setDescription)
 
 protected:
+    Instance * _instance;
     QString _name;
     QString _description;
 public:
-    ExpenseCategory();
+    ExpenseCategory(QObject * parent = 0);
 public slots:
+    Instance* getInstance();
     QString getName();
     QString getDescription();
+    void setInstance(Instance * instance);
     void setName(QString name);
     void setDescription(QString description);
 
     static void createFromList(Instance * instance, QStringList names);
+    static QList<ExpenseCategory*> getByInstanceId(uuid instanceId);
 };
 
 #endif // EXPENSE_CATEGORY_H

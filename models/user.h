@@ -5,6 +5,7 @@
 
 class User : public BaseEntity
 {
+    Q_OBJECT
     Q_PROPERTY(QString username READ getUsername WRITE setUsername)
     Q_PROPERTY(QString email READ getEmail WRITE setEmail)
     Q_PROPERTY(QString firstName READ getFirstName WRITE setFirstName)
@@ -17,7 +18,7 @@ protected:
     QString _lastName;
     bool _active;
 public:
-   User();
+   User(QObject * parent = 0);
    QString getUsername();
    QString getEmail();
    QString getFirstName();
@@ -29,6 +30,9 @@ public:
    void setLastName(QString lastName);
    void setActive(bool isActive);
    User* save();
+
+   static User* getActiveUser();
+   static User *getById(uuid id);
 
 signals:
 

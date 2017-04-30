@@ -5,5 +5,7 @@
         <file>Customize.qml</file>
         <file>Start.qml</file>
         <file>Dashboard.qml</file>
+        <file>CategoryItem.qml</file>
+        <file>CategoryAdd.qml</file>
     </qresource>
 </RCC>

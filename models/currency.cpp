@@ -1,6 +1,7 @@
 #include "currency.h"
 
-Currency::Currency()
+Currency::Currency(QObject * parent)
+    : Base(parent)
 {
 
 }
@@ -34,4 +35,36 @@ void Currency::setCode(QString code) {
 
 void Currency::setMinorUnits(int minorUnits) {
     this->_minorUnits = minorUnits;
+}
+
+Currency *Currency::getByNumber(int number)
+{
+    qDebug() << "Currency::getByNumber -" << number;
+
+    QString sql = "select * from currency where number=:number";
+    QSqlQuery query;
+    query.prepare(sql);
+    query.bindValue(":number", number);
+
+    if (!query.exec()) {
+        qDebug() << query.lastError();
+        qDebug() << query.lastQuery();
+
+        return NULL;
+    }
+
+    if (query.next()) {
+        Currency * currency = new Currency();
+
+        currency->setNumber(number);
+        currency->setName(query.value(1).toString());
+        currency->setCode(query.value(2).toString());
+        currency->setMinorUnits(query.value(3).toInt());
+        currency->setCreatedAt(query.value(4).toDateTime());
+        currency->setUpdatedAt(query.value(5).toDateTime());
+
+        return currency;
+    }
+
+    return NULL;
 }

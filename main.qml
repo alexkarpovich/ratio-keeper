@@ -7,35 +7,100 @@ import AppCore 1.0
 ApplicationWindow {
     visible: true
     width: 320
-    height: 480
+    height: 558
     title: qsTr("Ratio.Keeper")
+
+    property bool showHeader: [
+        AppCore.START,
+        AppCore.CUSTOMIZE,
+        AppCore.CATEGORY_ADD
+    ].indexOf(appCore.state) === -1
+
+    function getSource(state) {
+        var sourceFile = "Start.qml"
+
+        switch (state) {
+        case AppCore.START:
+            sourceFile = "Start.qml";
+            break;
+        case AppCore.CUSTOMIZE:
+            sourceFile = "Customize.qml";
+            break;
+        case AppCore.DASHBOARD:
+            sourceFile = "Dashboard.qml";
+            break;
+        case AppCore.CATEGORY_ADD:
+            sourceFile = "CategoryAdd.qml";
+            break;
+        }
+
+        return sourceFile;
+    }
 
     Connections {
         target: appCore
 
         onStateChanged: {
-            var sourceFile = "Start.qml"
+            contentLoader.source = getSource(state);
+        }
+    }
 
-            switch (state) {
-            case AppCore.START:
-                sourceFile = "Start.qml";
-                break;
-            case AppCore.CUSTOMIZE:
-                sourceFile = "Customize.qml";
-                break;
-            case AppCore.DASHBOARD:
-                sourceFile = "Dashboard.qml";
-                break;
+    header: ToolBar {
+        visible: showHeader
+        RowLayout {
+            anchors.fill: parent
+
+            ToolButton {
+                id: menuBtn
+
+                Image {
+                    id: burgerImage
+                    anchors.fill: parent
+                    anchors.margins: 9
+                    source: "images/menu.svg"
+                }
             }
 
-            contentLoader.source = sourceFile;
+            Label {
+                text: "Title"
+                elide: Label.ElideRight
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+            }
+            ToolButton {
+                id: profileBtn
+
+                Image {
+                    id: profileImage
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    source: "images/profile.svg"
+                }
+            }
         }
     }
 
     Loader {
         id: contentLoader
         anchors.fill: parent
-        source: "Start.qml"
+        source: getSource(appCore.state)
+    }
+
+    footer: TabBar {
+        id: footer
+        width: parent.width
+        visible: showHeader
+
+        TabButton {
+            text: qsTr("Dashboard")
+        }
+        TabButton {
+            text: qsTr("Other")
+        }
+        TabButton {
+            text: qsTr("Statictics")
+        }
     }
 
     Component.onCompleted: {

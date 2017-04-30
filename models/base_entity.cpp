@@ -1,6 +1,7 @@
 #include "base_entity.h"
 
-BaseEntity::BaseEntity()
+BaseEntity::BaseEntity(QObject * parent)
+    : Base(parent)
 {
 
 }
@@ -24,4 +25,12 @@ uuid BaseEntity::getId() {
 
 void BaseEntity::setId(uuid id) {
     this->_id = id;
+}
+
+void BaseEntity::setId(QByteArray id) {
+    char* _id = new char[36];
+
+    strcpy(_id, id.data());
+
+    this->_id = (uuid) _id;
 }

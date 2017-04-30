@@ -6,6 +6,7 @@
 
 class ExchangeRate : public BaseEntity
 {
+    Q_OBJECT
     Q_PROPERTY(Currency* base READ getBase WRITE setBase)
     Q_PROPERTY(Currency* compare READ getCompare WRITE setCompare)
     Q_PROPERTY(float rate READ getRate WRITE setRate)
@@ -17,7 +18,7 @@ protected:
     float _rate;
     QDateTime _date;
 public:
-    ExchangeRate();
+    ExchangeRate(QObject * parent = 0);
     Currency * getBase();
     Currency * getCompare();
     float getRate();

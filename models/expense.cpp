@@ -1,6 +1,7 @@
 #include "expense.h"
 
-Expense::Expense()
+Expense::Expense(QObject *parent)
+    : BaseEntity(parent)
 {
 
 }

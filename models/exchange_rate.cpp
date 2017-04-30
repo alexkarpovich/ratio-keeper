@@ -1,6 +1,7 @@
 #include "exchange_rate.h"
 
-ExchangeRate::ExchangeRate()
+ExchangeRate::ExchangeRate(QObject *parent)
+    : BaseEntity(parent)
 {
 
 }
