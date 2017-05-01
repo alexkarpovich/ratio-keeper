@@ -11,8 +11,8 @@ class Base : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QDateTime createdAt READ getCreatedAt)
-    Q_PROPERTY(QDateTime updatedAt READ getUpdatedAt)
+    Q_PROPERTY(QDateTime createdAt READ getCreatedAt NOTIFY propChanged)
+    Q_PROPERTY(QDateTime updatedAt READ getUpdatedAt NOTIFY propChanged)
 
 protected:
     QDateTime _createdAt;
@@ -24,6 +24,9 @@ public:
     QDateTime getUpdatedAt();
     void setCreatedAt(QDateTime createdAt);
     void setUpdatedAt(QDateTime updatedAt);
+
+signals:
+    void propChanged();
 };
 
 #endif // BASE_H

@@ -8,9 +8,9 @@
 class Expense : public BaseEntity
 {
     Q_OBJECT
-    Q_PROPERTY(ExpenseCategory* category READ getCategory WRITE setCategory)
-    Q_PROPERTY(User* user READ getUser WRITE setUser)
-    Q_PROPERTY(float value READ getValue WRITE setValue)
+    Q_PROPERTY(ExpenseCategory* category READ getCategory WRITE setCategory NOTIFY propChanged)
+    Q_PROPERTY(User* user READ getUser WRITE setUser NOTIFY propChanged)
+    Q_PROPERTY(float value READ getValue WRITE setValue NOTIFY propChanged)
 
 protected:
     ExpenseCategory * _category;
@@ -24,6 +24,9 @@ public:
     void setCategory(ExpenseCategory * category);
     void setUser(User * user);
     void setValue(float value);
+
+signals:
+    void propChanged();
 };
 
 #endif // EXPENSE_H

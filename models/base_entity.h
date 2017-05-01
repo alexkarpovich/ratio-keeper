@@ -8,7 +8,7 @@ typedef const char* uuid;
 
 class BaseEntity : public Base
 {
-    Q_PROPERTY(uuid id READ getId)
+    Q_PROPERTY(uuid id READ getId NOTIFY propChanged)
 protected:
     uuid _id = NULL;
 public:
@@ -20,6 +20,9 @@ public:
 
     static uuid genUuid();
     static int timestamp();
+
+signals:
+    void propChanged();
 };
 
 #endif // BASE_ENTITY_H

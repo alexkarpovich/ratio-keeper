@@ -69,7 +69,7 @@ void AppCore::initActuals() {
         this->setInstance(Instance::getByUserId(user->getId()));
     }
 
-    if (this->hasActiveUser()) {
+    if (isLoggedIn()) {
         this->setState(State::DASHBOARD);
     }
 }
@@ -89,20 +89,6 @@ User * AppCore::getUser() {
     qDebug() << "AppCore::getUser -";
 
     return this->user;
-}
-
-QStringList AppCore::getCustomCategories() {
-    qDebug() << "AppCore::getCustomCategories -";
-
-    if (this->customCategories.size() == 0) {
-        this->customCategories = this->getDefaultCategories();
-    }
-
-    return this->customCategories;
-}
-
-bool AppCore::hasActiveUser() {
-    return this->user != NULL;
 }
 
 void AppCore::setState(State state) {
@@ -137,28 +123,25 @@ void AppCore::setCurrency(Currency *currency)
     this->currency = currency;
 }
 
-void AppCore::addCustomCategory(QString category) {
-    qDebug() << "AppCore::addCustomCategory -" << category;
-
-    this->customCategories.append(category);
-}
-
-QStringList AppCore::getDefaultCategories()
+CustomizeCore *AppCore::getCustomizeCore() const
 {
-    qDebug() << "AppCore::getDefaultCategories -";
-
-    return config->get("expense_categories");
+    return customizeCore;
 }
 
-QStringList AppCore::getDefaultAccounts()
+void AppCore::setCustomizeCore(CustomizeCore *value)
 {
-    qDebug() << "AppCore::getDefaultAccounts -";
-
-    return config->get("accounts");
+    customizeCore = value;
 }
 
-void AppCore::configureInstance(QList<QString> selected) {
-    qDebug() << selected;
+bool AppCore::isLoggedIn()
+{
+    qDebug() << "AppCore::isLoggedIn -";
+
+    return user != NULL;
+}
+
+void AppCore::configureInstance() {
+    qDebug() << "AppCore::configureInstance -";
 
     // Create user with temp name
 
@@ -175,15 +158,15 @@ void AppCore::configureInstance(QList<QString> selected) {
 
     // Set currency
 
-    Currency * currency = Currency::getByNumber(config->get("currency", "default").toInt());
+    Currency *currency = customizeCore->getCurrency();
     this->setCurrency(currency);
 
     // Create accounts
 
-    Account::createFromList(instance, user, currency, this->getDefaultAccounts());
+    Account::createFromList(instance, user, currency, customizeCore->getAccountList());
 
     // Create expense categories from customize page
-    ExpenseCategory::createFromList(instance, selected);
+    ExpenseCategory::createFromList(instance, customizeCore->getCategoryList());
 
     this->setInstance(instance);
     this->setUser(user);
@@ -215,5 +198,19 @@ QList<QObject *> AppCore::getAccountList()
     }
 
     return accountList;
+}
+
+QList<QObject *> AppCore::getCurrencyList()
+{
+    qDebug() << "AppCore::getCurrencyList -";
+
+    QList<Currency *> currencies = Currency::getAll();
+    QList<QObject*> currencyList;
+
+    foreach (Currency* cur, currencies) {
+        currencyList.append(cur);
+    }
+
+    return currencyList;
 }
 

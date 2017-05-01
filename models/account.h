@@ -9,11 +9,11 @@
 class Account : public BaseEntity
 {
     Q_OBJECT
-    Q_PROPERTY(QString name READ getName WRITE setName)
-    Q_PROPERTY(float amount READ getAmount WRITE setAmount)
-    Q_PROPERTY(Currency* currency READ getCurrency WRITE setCurrency)
-    Q_PROPERTY(User* owner READ getOwner WRITE setOwner)
-    Q_PROPERTY(Instance* instance READ getInstance WRITE setInstance)
+    Q_PROPERTY(QString name READ getName WRITE setName NOTIFY propChanged)
+    Q_PROPERTY(float amount READ getAmount WRITE setAmount NOTIFY propChanged)
+    Q_PROPERTY(Currency* currency READ getCurrency WRITE setCurrency NOTIFY propChanged)
+    Q_PROPERTY(User* owner READ getOwner WRITE setOwner NOTIFY propChanged)
+    Q_PROPERTY(Instance* instance READ getInstance WRITE setInstance NOTIFY propChanged)
 
 protected:
     Currency * _currency;
@@ -36,6 +36,9 @@ public:
 
     static void createFromList(Instance * instance, User * user, Currency * currency, QStringList names, float amount = 0);
     static QList<Account *> getByInstanceId(uuid instanceId);
+
+signals:
+    void propChanged();
 };
 
 #endif // ACCOUNT_H

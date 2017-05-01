@@ -10,11 +10,7 @@ ApplicationWindow {
     height: 558
     title: qsTr("Ratio.Keeper")
 
-    property bool showHeader: [
-        AppCore.START,
-        AppCore.CUSTOMIZE,
-        AppCore.CATEGORY_ADD
-    ].indexOf(appCore.state) === -1
+    property bool isLoggedIn: appCore.isLoggedIn()
 
     function getSource(state) {
         var sourceFile = "Start.qml"
@@ -30,7 +26,10 @@ ApplicationWindow {
             sourceFile = "Dashboard.qml";
             break;
         case AppCore.CATEGORY_ADD:
-            sourceFile = "CategoryAdd.qml";
+            sourceFile = "customize/CategoryAdd.qml";
+            break;
+        case AppCore.CURRENCY_LIST:
+            sourceFile = "customize/CurrencyList.qml";
             break;
         }
 
@@ -46,7 +45,7 @@ ApplicationWindow {
     }
 
     header: ToolBar {
-        visible: showHeader
+        visible: isLoggedIn
         RowLayout {
             anchors.fill: parent
 
@@ -57,7 +56,7 @@ ApplicationWindow {
                     id: burgerImage
                     anchors.fill: parent
                     anchors.margins: 9
-                    source: "images/menu.svg"
+                    source: "/images/menu.svg"
                 }
             }
 
@@ -75,7 +74,7 @@ ApplicationWindow {
                     id: profileImage
                     anchors.fill: parent
                     anchors.margins: 5
-                    source: "images/profile.svg"
+                    source: "/images/profile.svg"
                 }
             }
         }
@@ -90,7 +89,7 @@ ApplicationWindow {
     footer: TabBar {
         id: footer
         width: parent.width
-        visible: showHeader
+        visible: isLoggedIn
 
         TabButton {
             text: qsTr("Dashboard")

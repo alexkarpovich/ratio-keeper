@@ -7,7 +7,7 @@
 class Instance : public BaseEntity
 {
     Q_OBJECT
-    Q_PROPERTY(QString name READ getName WRITE setName)
+    Q_PROPERTY(QString name READ getName WRITE setName NOTIFY propChanged)
 protected:
     QString _name;
 public:
@@ -20,6 +20,9 @@ public:
 
     static Instance * getById(uuid instanceId);
     static Instance * getByUserId(uuid userId);
+
+signals:
+    void propChanged();
 };
 
 #endif // INSTANCE_H

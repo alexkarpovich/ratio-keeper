@@ -6,10 +6,10 @@
 class Currency : public Base
 {
     Q_OBJECT
-    Q_PROPERTY(int number READ getNumber WRITE setNumber)
-    Q_PROPERTY(QString name READ getName WRITE setName)
-    Q_PROPERTY(QString code READ getCode WRITE setCode)
-    Q_PROPERTY(int minorUnits READ getMinorUnits WRITE setMinorUnits)
+    Q_PROPERTY(int number READ getNumber WRITE setNumber NOTIFY propChanged)
+    Q_PROPERTY(QString name READ getName WRITE setName NOTIFY propChanged)
+    Q_PROPERTY(QString code READ getCode WRITE setCode NOTIFY propChanged)
+    Q_PROPERTY(int minorUnits READ getMinorUnits WRITE setMinorUnits NOTIFY propChanged)
 
 protected:
     int _number;
@@ -28,6 +28,10 @@ public:
     void setMinorUnits(int minorUnits);
 
     static Currency *getByNumber(int number);
+    static QList<Currency *> getAll();
+
+signals:
+    void propChanged();
 };
 
 #endif // CURRENCY_H

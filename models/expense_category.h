@@ -7,9 +7,9 @@
 class ExpenseCategory : public BaseEntity
 {
     Q_OBJECT
-    Q_PROPERTY(Instance* instance READ getInstance WRITE setInstance)
-    Q_PROPERTY(QString name READ getName WRITE setName)
-    Q_PROPERTY(QString description READ getDescription WRITE setDescription)
+    Q_PROPERTY(Instance* instance READ getInstance WRITE setInstance NOTIFY propChanged)
+    Q_PROPERTY(QString name READ getName WRITE setName NOTIFY propChanged)
+    Q_PROPERTY(QString description READ getDescription WRITE setDescription NOTIFY propChanged)
 
 protected:
     Instance * _instance;
@@ -27,6 +27,9 @@ public slots:
 
     static void createFromList(Instance * instance, QStringList names);
     static QList<ExpenseCategory*> getByInstanceId(uuid instanceId);
+
+signals:
+    void propChanged();
 };
 
 #endif // EXPENSE_CATEGORY_H

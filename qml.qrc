@@ -1,11 +1,15 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>qtquickcontrols2.conf</file>
-        <file>Customize.qml</file>
-        <file>Start.qml</file>
-        <file>Dashboard.qml</file>
-        <file>CategoryItem.qml</file>
-        <file>CategoryAdd.qml</file>
+        <file>qml/Customize.qml</file>
+        <file>qml/Dashboard.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/qtquickcontrols2.conf</file>
+        <file>qml/Start.qml</file>
+        <file>qml/customize/CategoryAdd.qml</file>
+        <file>qml/customize/CategoryItem.qml</file>
+        <file>qml/customize/StepI.qml</file>
+        <file>qml/customize/StepII.qml</file>
+        <file>qml/customize/CurrencyList.qml</file>
+        <file>qml/customize/CurrencyItem.qml</file>
     </qresource>
 </RCC>

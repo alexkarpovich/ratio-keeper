@@ -68,3 +68,34 @@ Currency *Currency::getByNumber(int number)
 
     return NULL;
 }
+
+QList<Currency *> Currency::getAll()
+{
+    qDebug() << "Currency::getAll -";
+
+    QList<Currency *> currencyList;
+    QString sql = "select * from currency";
+    QSqlQuery query;
+
+    if (!query.exec(sql)) {
+        qDebug() << query.lastError();
+        qDebug() << query.lastQuery();
+
+        return currencyList;
+    }
+
+    while (query.next()) {
+        Currency * currency = new Currency();
+
+        currency->setNumber(query.value(0).toInt());
+        currency->setName(query.value(1).toString());
+        currency->setCode(query.value(2).toString());
+        currency->setMinorUnits(query.value(3).toInt());
+        currency->setCreatedAt(query.value(4).toDateTime());
+        currency->setUpdatedAt(query.value(5).toDateTime());
+
+        currencyList.append(currency);
+    }
+
+    return currencyList;
+}

@@ -23,7 +23,7 @@ Item {
             visible: false
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            source: 'images/add.svg'
+            source: '/images/add.svg'
         }
 
         Text {

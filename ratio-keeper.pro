@@ -13,10 +13,11 @@ SOURCES += main.cpp \
     models/expense.cpp \
     models/expense_category.cpp \
     models/exchange_rate.cpp \
-    appconfig.cpp
+    appconfig.cpp \
+    customizecore.cpp
 
 RESOURCES += qml.qrc \
-    db.qrc
+    resources.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -51,4 +52,5 @@ HEADERS += \
     models/expense.h \
     models/expense_category.h \
     models/exchange_rate.h \
-    appconfig.h
+    appconfig.h \
+    customizecore.h

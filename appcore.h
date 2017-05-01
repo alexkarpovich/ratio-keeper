@@ -8,6 +8,7 @@
 #include <QMap>
 #include <QDebug>
 #include "appconfig.h"
+#include "customizecore.h"
 #include "models/account.h"
 #include "models/user.h"
 #include "models/instance.h"
@@ -25,12 +26,13 @@ class AppCore : public QObject
     Q_PROPERTY(State state READ getState WRITE setState NOTIFY stateChanged)
 
 public:
-    explicit AppCore(QObject *parent = 0);
+    AppCore(QObject *parent = 0);
     enum State {
         START=0,
         CUSTOMIZE,
         DASHBOARD,
         CATEGORY_ADD,
+        CURRENCY_LIST
     };
 
     State getState();
@@ -42,6 +44,9 @@ public:
     Currency *getCurrency() const;
     void setCurrency(Currency *currency);
 
+    CustomizeCore *getCustomizeCore() const;
+    void setCustomizeCore(CustomizeCore *value);
+
 protected:
     /** dataLocation - place where sqlite file put to */
     QString dataLocation;
@@ -50,23 +55,22 @@ protected:
     QSqlDatabase sdb;
 
     /** config - it's init from config.ini */
-    AppConfig * config = NULL;
+    AppConfig *config = NULL;
 
     /** appState - stores what pare is displayed */
     State appState;
 
+    /** customizeCore - core to handle customize state */
+    CustomizeCore *customizeCore;
+
     /** instance - actual app instance */
-    Instance * instance = NULL;
+    Instance *instance = NULL;
 
     /** user - actual user */
-    User * user = NULL;
+    User *user = NULL;
 
     /** currency - actual currency */
-    Currency * currency = NULL;
-
-    /** customCategories - list of default categories + custom on customization state */
-    QStringList customCategories;
-
+    Currency *currency = NULL;
 
 private:
     void copyFiles(QMap<QString, QString> files);
@@ -77,20 +81,6 @@ signals:
     void stateChanged(State state);
 
 public slots:
-    /** Returns list of default categories stored in config.ini */
-    QStringList getDefaultCategories();
-
-    /**
-     * @brief getDefaultAccounts
-     * @return list of default accounts stored in config.ini
-     */
-    QStringList getDefaultAccounts();
-
-    /**
-     * @brief getCustomCategories
-     * @return customCategories
-     */
-    QStringList getCustomCategories();
 
     /** Returns actual list of categories */
     QList<QObject*> getCategoryList();
@@ -101,22 +91,23 @@ public slots:
      */
     QList<QObject *> getAccountList();
 
-    /** Checks if actual user is set */
-    bool hasActiveUser();
+    /**
+     * @brief getCurrencyList
+     * @return all currencies
+     */
+    QList<QObject *> getCurrencyList();
 
     /** Changes app state */
     void setState(State state);
 
-    /** Configure app with custom categories */
-    void configureInstance(QList<QString> selected);
+    /** Configure app using customizeCore data */
+    void configureInstance();
 
     /**
-     * @brief addCustomCategory
-     * @param category
+     * @brief isLoggedIn
+     * @return true if user is set
      */
-    void addCustomCategory(QString category);
-
-
+    bool isLoggedIn();
 };
 
 #endif // APPCORE_H

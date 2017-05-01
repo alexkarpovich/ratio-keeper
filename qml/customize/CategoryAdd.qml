@@ -45,7 +45,7 @@ Item {
             text: qsTr("Добавить")
 
             onClicked: {
-                appCore.addCustomCategory(categoryName.text);
+                customizeCore.addCategory(categoryName.text);
                 appCore.setState(AppCore.CUSTOMIZE);
             }
         }
