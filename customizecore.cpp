@@ -4,8 +4,21 @@ CustomizeCore::CustomizeCore(QObject *parent) : QObject(parent)
 {
     config = new AppConfig();
     _currency = Currency::getByNumber(config->get("currency", "default").toInt());
+    _user = new User();
+    _user->setUsername(config->get("user", "username"));
+    _user->setActive(true);
     _accountList = config->get("accounts");
     _categoryList = config->get("expense_categories");
+}
+
+User *CustomizeCore::getUser() const
+{
+    return _user;
+}
+
+void CustomizeCore::setUser(User *user)
+{
+    _user = user;
 }
 
 AppConfig *CustomizeCore::getConfig() const

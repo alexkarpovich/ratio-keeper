@@ -41,6 +41,7 @@ ApplicationWindow {
 
         onStateChanged: {
             contentLoader.source = getSource(state);
+            isLoggedIn = appCore.isLoggedIn()
         }
     }
 

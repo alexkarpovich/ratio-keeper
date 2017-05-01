@@ -145,9 +145,7 @@ void AppCore::configureInstance() {
 
     // Create user with temp name
 
-    User * user = new User();
-    user->setUsername(QDateTime::currentDateTime().toString());
-    user->setActive(true);
+    User * user = customizeCore->getUser();
     user->save();
 
     // Create instance

@@ -6,6 +6,7 @@
 #include <QStringList>
 #include "appconfig.h"
 #include "models/currency.h"
+#include "models/user.h"
 
 /**
  * @brief The CustomizeCore class
@@ -20,13 +21,15 @@ class CustomizeCore : public QObject
     Q_PROPERTY(QString firstName READ getFirstName WRITE setFirstName NOTIFY propChanged)
     Q_PROPERTY(QString lastName READ getLastName WRITE setLastName NOTIFY propChanged)
     Q_PROPERTY(Currency* currency READ getCurrency WRITE setCurrency NOTIFY propChanged)
+    Q_PROPERTY(User* user READ getUser WRITE setUser NOTIFY propChanged)
 
     AppConfig *config;
     QString _username;
     QString _email;
     QString _firstName;
     QString _lastName;
-    Currency * _currency;
+    User *_user;
+    Currency *_currency;
     QStringList _categoryList;
     QStringList _accountList;
 
@@ -48,11 +51,11 @@ public:
     Currency *getCurrency() const;
     void setCurrency(Currency *value);
 
-    void setCategoryList(const QStringList &value);
-    void setAccountList(const QStringList &value);
-
     AppConfig *getConfig() const;
     void setConfig(AppConfig *value);
+
+    User *getUser() const;
+    void setUser(User *user);
 
 signals:
     void propChanged();
@@ -60,6 +63,8 @@ public slots:
     QStringList getCategoryList() const;
     QStringList getAccountList() const;
     QList<QObject *> getCurrencyList();
+    void setCategoryList(const QStringList &value);
+    void setAccountList(const QStringList &value);
     void addCategory(const QString &value);
 };
 

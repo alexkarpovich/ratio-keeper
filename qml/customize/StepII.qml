@@ -37,7 +37,8 @@ Item {
                     categoryNames.push(categoryModel[selected[i]]);
                 }
 
-                appCore.configureInstance(categoryNames)
+                customizeCore.setCategoryList(categoryNames)
+                appCore.configureInstance()
             }
         }
     }

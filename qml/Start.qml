@@ -18,7 +18,7 @@ Item {
         font.pointSize: 16
 
         onClicked: {
-            appCore.setState(AppCore.DASHBOARD)
+            appCore.configureInstance()
         }
     }
 

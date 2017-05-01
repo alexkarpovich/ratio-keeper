@@ -5,6 +5,7 @@ import AppCore 1.0
 
 Item {
     property var currency: customizeCore.currency;
+    property var user: customizeCore.user
 
     Column {
         anchors.fill: parent
@@ -38,6 +39,7 @@ Item {
             id: username
             anchors.left: parent.left
             anchors.right: parent.right
+            text: user.username
         }
 
         Label {
@@ -50,6 +52,7 @@ Item {
             id: email
             anchors.left: parent.left
             anchors.right: parent.right
+            text: user.email
         }
 
         Label {
@@ -62,6 +65,7 @@ Item {
             id: firstName
             anchors.left: parent.left
             anchors.right: parent.right
+            text: user.firstName
         }
 
         Label {
@@ -74,6 +78,18 @@ Item {
             id: lastName
             anchors.left: parent.left
             anchors.right: parent.right
+            text: user.lastName
+        }
+
+        Button {
+            text: qsTr('Сохранить')
+
+            onClicked: {
+                user.username = username.text
+                user.email = email.text
+                user.firstName = firstName.text
+                user.lastName = lastName.text
+            }
         }
     }
 }
