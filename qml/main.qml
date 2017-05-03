@@ -5,6 +5,7 @@ import QtQuick.Window 2.0
 import AppCore 1.0
 
 ApplicationWindow {
+    id: window
     visible: true
     width: 320
     height: 558
@@ -59,6 +60,10 @@ ApplicationWindow {
                     anchors.margins: 9
                     source: "/images/menu.svg"
                 }
+
+                onClicked: {
+                    menu.open()
+                }
             }
 
             Label {
@@ -79,6 +84,13 @@ ApplicationWindow {
                 }
             }
         }
+    }
+
+    Drawer {
+        id: menu
+        y: header.height
+        width: window.width * 0.8
+        height: window.height - header.height
     }
 
     Loader {

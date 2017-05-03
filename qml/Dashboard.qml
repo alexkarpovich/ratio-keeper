@@ -5,7 +5,7 @@ Item {
     anchors.fill: parent
 
     property var categoryList: appCore.getCategoryList()
-    property var accountList: appCore.getAccountList()
+    property var accountList: appCore.getAccountList()    
 
     GridView {
         id: view
@@ -29,9 +29,13 @@ Item {
                 anchors.fill: parent
 
                 Text {
+                    width: parent.width
                     anchors.centerIn: parent
                     renderType: Text.NativeRendering
+                    horizontalAlignment: Text.AlignHCenter
                     text: model.modelData.name
+                    wrapMode: Text.WordWrap
+                    font.pointSize: 8
                 }
 
                 MouseArea {
