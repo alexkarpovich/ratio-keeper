@@ -14,8 +14,8 @@ QString ExpenseCategory::getName() {
     return this->_name;
 }
 
-QString ExpenseCategory::getDescription() {
-    return this->_description;
+QString ExpenseCategory::getIcon() {
+    return this->_icon;
 }
 
 void ExpenseCategory::setInstance(Instance *instance) {
@@ -26,21 +26,25 @@ void ExpenseCategory::setName(QString name) {
     this->_name = name;
 }
 
-void ExpenseCategory::setDescription(QString description) {
-    this->_description = description;
+void ExpenseCategory::setIcon(QString value) {
+    this->_icon = value;
 }
 
-void ExpenseCategory::createFromList(Instance * instance, QStringList names) {
+void ExpenseCategory::createFromList(Instance * instance, QList<QObject *> categoryList) {
     qDebug() << "ExpenseCategory::createFromList -";
 
     int timestamp = ExpenseCategory::timestamp();
-    QString sql = "insert into expense_category (id, instance_id, name, description, created_at, updated_at) values";
+    QString sql = "insert into expense_category (id, instance_id, name, icon, created_at, updated_at) values";
 
     QString ts = QString::number(timestamp);
     QStringList rows;
-    foreach(const QString& name, names) {
-        rows.append(QString("('%1','%2','%3','%4',%5,%6)")
-                .arg(ExpenseCategory::genUuid(), instance->getId(), name, "", ts, ts));
+    foreach(const QObject * ctg, categoryList) {
+        rows.append(QString("('%1','%2','%3','%4',%5,%6)").arg(
+                        ExpenseCategory::genUuid(),
+                        instance->getId(),
+                        ctg->property("name").toString(),
+                        ctg->property("icon").toString(), ts, ts)
+                    );
     }
     sql += rows.join(", ");
 
@@ -80,9 +84,36 @@ QList<ExpenseCategory*> ExpenseCategory::getByInstanceId(uuid instanceId) {
         ctg->setId(query.value(0).toByteArray());
         ctg->setInstance(instance);
         ctg->setName(query.value(2).toString());
-        ctg->setDescription(query.value(3).toString());
+        ctg->setIcon(query.value(3).toString());
         ctg->setCreatedAt(query.value(4).toDateTime());
         ctg->setUpdatedAt(query.value(5).toDateTime());
+
+        categoryList.append(ctg);
+    }
+
+    return categoryList;
+}
+
+QList<ExpenseCategory *> ExpenseCategory::getSystem()
+{
+    qDebug() << "ExpenseCategory::getSystem -";
+
+    QList<ExpenseCategory*> categoryList;
+    QString sql = "select * from expense_category where system=1";
+
+    QSqlQuery query;
+
+    if (!query.exec(sql)) {
+        qDebug() << query.lastError();
+        qDebug() << query.lastQuery();
+
+        return categoryList;
+    }
+
+    while (query.next()) {
+        ExpenseCategory * ctg = new ExpenseCategory();
+        ctg->setName(query.value(2).toString());
+        ctg->setIcon(query.value(4).toString());
 
         categoryList.append(ctg);
     }

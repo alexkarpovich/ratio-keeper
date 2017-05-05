@@ -1,5 +1,15 @@
 #include "account.h"
 
+QString Account::getIcon() const
+{
+    return _icon;
+}
+
+void Account::setIcon(const QString &icon)
+{
+    _icon = icon;
+}
+
 Account::Account(QObject * parent)
     : BaseEntity(parent)
 {
@@ -48,23 +58,30 @@ void Account::setInstance(Instance *instance)
     this->_instance = instance;
 }
 
-void Account::createFromList(Instance *instance, User *user, Currency * currency, QStringList names, float amount)
+void Account::createFromList(
+        Instance *instance,
+        User *user,
+        Currency * currency,
+        QList<QObject *> accountList,
+        float amount
+    )
 {
     qDebug() << "Account::createFromList -";
 
     int timestamp = Account::timestamp();
-    QString sql = "insert into account (id, owner_id, instance_id, currency_id, name, amount, created_at, updated_at) values";
+    QString sql = "insert into account (id, owner_id, instance_id, currency_id, name, icon, amount, created_at, updated_at) values";
 
     QString ts = QString::number(timestamp);
     QStringList rows;
 
-    foreach(const QString& name, names) {
-        rows.append(QString("('%1','%2','%3',%4,'%5',%6,%7,%8)").arg(
+    foreach(const QObject* account, accountList) {
+        rows.append(QString("('%1','%2','%3',%4,'%5','%6',%7,%8,%9)").arg(
                         Account::genUuid(),
                         user->getId(),
                         instance->getId(),
                         QString::number(currency->getNumber()),
-                        name,
+                        account->property("name").toString(),
+                        account->property("icon").toString(),
                         QString::number(amount), ts, ts)
                     );
     }
@@ -112,6 +129,33 @@ QList<Account *> Account::getByInstanceId(uuid instanceId)
         account->setAmount(query.value(5).toFloat());
         account->setCreatedAt(query.value(6).toDateTime());
         account->setUpdatedAt(query.value(7).toDateTime());
+
+        accountList.append(account);
+    }
+
+    return accountList;
+}
+
+QList<Account *> Account::getSystem()
+{
+    qDebug() << "Account::getSystem -";
+
+    QList<Account *> accountList;
+    QString sql = "select * from account where system=1";
+
+    QSqlQuery query;
+
+    if (!query.exec(sql)) {
+        qDebug() << query.lastError();
+        qDebug() << query.lastQuery();
+
+        return accountList;
+    }
+
+    while (query.next()) {
+        Account * account = new Account();
+        account->setName(query.value(4).toString());
+        account->setIcon(query.value(7).toString());
 
         accountList.append(account);
     }

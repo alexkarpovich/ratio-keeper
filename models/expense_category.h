@@ -9,24 +9,25 @@ class ExpenseCategory : public BaseEntity
     Q_OBJECT
     Q_PROPERTY(Instance* instance READ getInstance WRITE setInstance NOTIFY propChanged)
     Q_PROPERTY(QString name READ getName WRITE setName NOTIFY propChanged)
-    Q_PROPERTY(QString description READ getDescription WRITE setDescription NOTIFY propChanged)
+    Q_PROPERTY(QString icon READ getIcon WRITE setIcon NOTIFY propChanged)
 
 protected:
     Instance * _instance;
     QString _name;
-    QString _description;
+    QString _icon;
 public:
     ExpenseCategory(QObject * parent = 0);
 public slots:
     Instance* getInstance();
     QString getName();
-    QString getDescription();
+    QString getIcon();
     void setInstance(Instance * instance);
     void setName(QString name);
-    void setDescription(QString description);
+    void setIcon(QString icon);
 
-    static void createFromList(Instance * instance, QStringList names);
-    static QList<ExpenseCategory*> getByInstanceId(uuid instanceId);
+    static void createFromList(Instance * instance, QList<QObject *> categoryList);
+    static QList<ExpenseCategory *> getByInstanceId(uuid instanceId);
+    static QList<ExpenseCategory *> getSystem();
 
 signals:
     void propChanged();

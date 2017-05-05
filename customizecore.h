@@ -5,8 +5,10 @@
 #include <QString>
 #include <QStringList>
 #include "appconfig.h"
+#include "models/account.h"
 #include "models/currency.h"
 #include "models/user.h"
+#include "models/expense_category.h"
 
 /**
  * @brief The CustomizeCore class
@@ -30,8 +32,8 @@ class CustomizeCore : public QObject
     QString _lastName;
     User *_user;
     Currency *_currency;
-    QStringList _categoryList;
-    QStringList _accountList;
+    QList<QObject *> _categoryList;
+    QList<QObject *> _accountList;
 
 public:
     explicit CustomizeCore(QObject *parent = 0);
@@ -60,11 +62,11 @@ public:
 signals:
     void propChanged();
 public slots:
-    QStringList getCategoryList() const;
-    QStringList getAccountList() const;
+    QList<QObject *> getCategoryList() const;
+    QList<QObject *> getAccountList() const;
     QList<QObject *> getCurrencyList();
-    void setCategoryList(const QStringList &value);
-    void setAccountList(const QStringList &value);
+    void setCategoryList(const QList<QObject *> &value);
+    void setAccountList(const QList<QObject *> &value);
     void addCategory(const QString &value);
 };
 

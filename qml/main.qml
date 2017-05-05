@@ -91,6 +91,21 @@ ApplicationWindow {
         y: header.height
         width: window.width * 0.8
         height: window.height - header.height
+
+        background: Rectangle {
+            color: '#eeeeee'
+        }
+
+        Column {
+            anchors.fill: parent
+
+            Button {
+                anchors.left: parent.left
+                anchors.right: parent.right
+
+                text: 'Выйти'
+            }
+        }
     }
 
     Loader {
