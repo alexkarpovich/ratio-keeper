@@ -30,7 +30,7 @@ void ExpenseCategory::setIcon(QString value) {
     this->_icon = value;
 }
 
-void ExpenseCategory::createFromList(Instance * instance, QList<QObject *> categoryList) {
+void ExpenseCategory::createFromList(Instance * instance, QList<ExpenseCategory *> categoryList) {
     qDebug() << "ExpenseCategory::createFromList -";
 
     int timestamp = ExpenseCategory::timestamp();
@@ -38,12 +38,12 @@ void ExpenseCategory::createFromList(Instance * instance, QList<QObject *> categ
 
     QString ts = QString::number(timestamp);
     QStringList rows;
-    foreach(const QObject * ctg, categoryList) {
+    foreach(ExpenseCategory *ctg, categoryList) {
         rows.append(QString("('%1','%2','%3','%4',%5,%6)").arg(
                         ExpenseCategory::genUuid(),
                         instance->getId(),
-                        ctg->property("name").toString(),
-                        ctg->property("icon").toString(), ts, ts)
+                        ctg->getName(),
+                        ctg->getIcon(), ts, ts)
                     );
     }
     sql += rows.join(", ");

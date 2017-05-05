@@ -34,7 +34,7 @@ Item {
             font.pointSize: 8
             horizontalAlignment: Text.AlignHCenter
             renderType: Text.NativeRendering
-            text: model.modelData
+            text: model.modelData.name
         }
 
         MouseArea {

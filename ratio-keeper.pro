@@ -53,4 +53,5 @@ HEADERS += \
     models/expense_category.h \
     models/exchange_rate.h \
     appconfig.h \
-    customizecore.h
+    customizecore.h \
+    apputility.h

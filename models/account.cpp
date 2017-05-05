@@ -62,7 +62,7 @@ void Account::createFromList(
         Instance *instance,
         User *user,
         Currency * currency,
-        QList<QObject *> accountList,
+        QList<Account *> accountList,
         float amount
     )
 {
@@ -74,14 +74,14 @@ void Account::createFromList(
     QString ts = QString::number(timestamp);
     QStringList rows;
 
-    foreach(const QObject* account, accountList) {
+    foreach(Account *account, accountList) {
         rows.append(QString("('%1','%2','%3',%4,'%5','%6',%7,%8,%9)").arg(
                         Account::genUuid(),
                         user->getId(),
                         instance->getId(),
                         QString::number(currency->getNumber()),
-                        account->property("name").toString(),
-                        account->property("icon").toString(),
+                        account->getName(),
+                        account->getIcon(),
                         QString::number(amount), ts, ts)
                     );
     }

@@ -25,7 +25,7 @@ public slots:
     void setName(QString name);
     void setIcon(QString icon);
 
-    static void createFromList(Instance * instance, QList<QObject *> categoryList);
+    static void createFromList(Instance * instance, QList<ExpenseCategory *> categoryList);
     static QList<ExpenseCategory *> getByInstanceId(uuid instanceId);
     static QList<ExpenseCategory *> getSystem();
 

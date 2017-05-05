@@ -4,6 +4,8 @@
 #include <QtQml>
 #include "appcore.h"
 #include "customizecore.h"
+#include "models/account.h"
+#include "models/expense_category.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,6 +15,8 @@ int main(int argc, char *argv[])
     QQmlContext * ctx = engine.rootContext();
 
     qmlRegisterType<AppCore>("AppCore", 1, 0, "AppCore");
+    qmlRegisterType<Account>("Model", 1, 0, "Account");
+    qmlRegisterType<ExpenseCategory>("Model", 1, 0, "ExpenseCategory");
 
     AppCore * appCore = new AppCore();
     CustomizeCore * customizeCore = new CustomizeCore();

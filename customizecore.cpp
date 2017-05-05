@@ -31,46 +31,6 @@ void CustomizeCore::setConfig(AppConfig *value)
     config = value;
 }
 
-QString CustomizeCore::getUsername() const
-{
-    return _username;
-}
-
-void CustomizeCore::setUsername(const QString &value)
-{
-    _username = value;
-}
-
-QString CustomizeCore::getEmail() const
-{
-    return _email;
-}
-
-void CustomizeCore::setEmail(const QString &value)
-{
-    _email = value;
-}
-
-QString CustomizeCore::getFirstName() const
-{
-    return _firstName;
-}
-
-void CustomizeCore::setFirstName(const QString &value)
-{
-    _firstName = value;
-}
-
-QString CustomizeCore::getLastName() const
-{
-    return _lastName;
-}
-
-void CustomizeCore::setLastName(const QString &value)
-{
-    _lastName = value;
-}
-
 Currency *CustomizeCore::getCurrency() const
 {
     return _currency;
@@ -81,38 +41,45 @@ void CustomizeCore::setCurrency(Currency *value)
     _currency = value;
 }
 
-QList<QObject *> CustomizeCore::getCategoryList() const
+QList<ExpenseCategory *> CustomizeCore::getCategoryList() const
 {
     return _categoryList;
 }
 
-void CustomizeCore::setCategoryList(const QList<QObject *> &value)
+void CustomizeCore::setCategoryList(const QList<ExpenseCategory *> &value)
 {
     _categoryList = value;
 }
 
-QList<QObject *> CustomizeCore::getAccountList() const
+QList<Account *> CustomizeCore::getAccountList() const
 {
     return _accountList;
 }
 
-void CustomizeCore::setAccountList(const QList<QObject *> &value)
+void CustomizeCore::setAccountList(const QList<Account *> &value)
 {
     _accountList = value;
+}
+
+QList<QObject *> CustomizeCore::getCategories()
+{
+    qDebug() << "CustomizeCore::getCategories -";
+
+    return AppUtility::getObjectList<ExpenseCategory *>(this->getCategoryList());
+}
+
+QList<QObject *> CustomizeCore::getAccouns()
+{
+    qDebug() << "CustomizeCore::getAccouns -";
+
+    return AppUtility::getObjectList<Account *>(this->getAccountList());
 }
 
 QList<QObject *> CustomizeCore::getCurrencyList()
 {
     qDebug() << "CustomizeCore::getCurrencyList -";
 
-    QList<Currency *> currencies = Currency::getAll();
-    QList<QObject*> currencyList;
-
-    foreach (Currency* cur, currencies) {
-        currencyList.append(cur);
-    }
-
-    return currencyList;
+    return AppUtility::getObjectList<ExpenseCategory *>(this->getCategoryList());
 }
 
 void CustomizeCore::addCategory(const QString &name, const QString &icon) {

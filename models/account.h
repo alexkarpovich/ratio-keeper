@@ -39,7 +39,7 @@ public:
     void setInstance(Instance * instance);
 
 
-    static void createFromList(Instance * instance, User * user, Currency * currency, QList<QObject *> accountList, float amount = 0);
+    static void createFromList(Instance * instance, User * user, Currency * currency, QList<Account *> accountList, float amount = 0);
     static QList<Account *> getByInstanceId(uuid instanceId);
     static QList<Account *> getSystem();
 
